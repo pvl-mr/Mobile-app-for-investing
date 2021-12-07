@@ -11,7 +11,8 @@ module.exports = passport => {
     passport.use(
         new JwtStrategy(options, async (payload, done) => {
             try {
-                const user = await db.query(`SELECT * FROM users where id = $1`, [payload.userId])
+                let user = await db.query(`SELECT * FROM CLIENT where id = $1`, [payload.userId])
+                if (user.rowCount == 0) user = await db.query(`SELECT * FROM ANALYST where id = $1`, [payload.userId])
                 if (user.rowCount > 0) {
                     done(null, user.rows[0])
                 } else {
