@@ -9,7 +9,12 @@ class AuthController {
         let candidate = await db.query('SELECT * FROM CLIENT WHERE email = $1', [email])
         if (candidate.rowCount == 0) candidate = await db.query('SELECT * FROM ANALYST WHERE email = $1', [email])
         if (candidate.rowCount > 0) {
-            const isMatch = bcrypt.compareSync(pass, candidate.rows[0].pass)
+            // const isMatch = bcrypt.compareSync(pass, candidate.rows[0].pass)
+            console.log('email', email);
+            console.log('pass', pass);
+            console.log('candidate.rows[0].pass', candidate.rows[0].pass);
+
+            const isMatch = (pass === candidate.rows[0].pass)
                 if (isMatch) {
                     const token = jwt.sign({
                         email: candidate.rows[0].email,
@@ -17,7 +22,7 @@ class AuthController {
                     }, config.jwtKey, {expiresIn: config.ttl})
                     res.status(200).json({
                         status: "ok",
-                        body: token
+                        user_id: candidate.rows[0].id
                     })
                 } else {
                     res.status(401).json({
@@ -25,7 +30,7 @@ class AuthController {
                     })
                 }
         } else {
-            res.status(404).json({
+            res.status(409).json({
                 message: "Пользователя с таким email не существует."
             })
         }
@@ -41,13 +46,13 @@ class AuthController {
                 message: 'Пользователь с таким email уже зарегистрирован'
             })
         } else {
-            const salt = bcrypt.genSaltSync(10)
-            const cr_password = bcrypt.hashSync(pass, salt)
+            // const salt = bcrypt.genSaltSync(10)
+            // const cr_password = bcrypt.hashSync(pass, salt)
             let newUser;
             if (code != null) {
-                newUser = await db.query(`INSERT INTO ANALYST (firstName, lastName, email, pass, code) values ($1, $2, $3, $4, $5) RETURNING * `, [first_name, last_name, email, cr_password, code])
+                newUser = await db.query(`INSERT INTO ANALYST (firstName, lastName, email, pass, code) values ($1, $2, $3, $4, $5) RETURNING * `, [first_name, last_name, email, pass, code])
             } else {
-                newUser = await db.query(`INSERT INTO CLIENT (firstName, lastName, email, pass) values ($1, $2, $3, $4) RETURNING * `, [first_name, last_name, email, cr_password])
+                newUser = await db.query(`INSERT INTO CLIENT (firstName, lastName, email, pass) values ($1, $2, $3, $4) RETURNING * `, [first_name, last_name, email, pass])
             }   
            
             newUser.rows.length > 0 ? res.status(201).json({status: "ok"}) : res.status(400).json("Error");
