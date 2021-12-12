@@ -108,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -121,21 +121,22 @@
         app:layout_constraintStart_toStartOf="@+id/inputCode"
         app:layout_constraintTop_toBottomOf="@+id/inputCode" />
 
-    <TextView
+    <Button
         android:id="@+id/alreadyHaveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/btn_background"
         android:text="Уже есть аккаунт?"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="@+id/btnRegister"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/btnLogin"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        app:layout_constraintVertical_bias="0.396" />
+        app:layout_constraintStart_toStartOf="@+id/btnRegister"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister"
+        app:layout_constraintVertical_bias="0.13999999" />
 
-    <TextView
+    <EditText
         android:id="@+id/inputCode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
