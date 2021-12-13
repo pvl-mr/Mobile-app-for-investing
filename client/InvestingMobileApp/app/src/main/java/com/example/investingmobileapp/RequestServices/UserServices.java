@@ -10,7 +10,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.investingmobileapp.helpers.MySingleton;
 import com.example.investingmobileapp.interfaces.ILoginResponse;
 import com.example.investingmobileapp.interfaces.IRegisterResponse;
+import com.example.investingmobileapp.interfaces.IUserResponse;
+import com.example.investingmobileapp.models.InstrumentModel;
+import com.example.investingmobileapp.models.UserModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +23,7 @@ public class UserServices {
 
     Context context;
     String userId;
+    UserModel temp;
 
     public UserServices(Context context) {
         this.context = context;
@@ -63,5 +68,30 @@ public class UserServices {
         MySingleton.getInstance(context).addToRequestQueue(jsonObject);
     }
 
+    public void getUser(String user_id, final IUserResponse userResponse) {
+        String url = LOCALHOST_SERVER + "client/" + user_id;
+        JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    int id = response.getInt("id");
+                    String first_name = response.getString("first_name");
+                    String last_name = response.getString("last_name");
+                    String email = response.getString("email");
+                    String password = response.getString("password");
+                    temp = new UserModel(id, first_name, last_name, email, password);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                userResponse.onResponse(temp);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                userResponse.onError("Не удалось найти пользователя");
+            }
+        });
+        MySingleton.getInstance(context).addToRequestQueue(jsonObject);
+    }
 
 }

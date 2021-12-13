@@ -4,6 +4,25 @@ const db = require('../db')
 const config = require('../config')
 
 class AuthController {
+    async getPersonClient(req, res) {
+        const id = req.params.id;
+        let candidate = await db.query('SELECT * FROM CLIENT WHERE id = $1', [id])
+        console.log("----------", candidate)
+        if (candidate.rowCount > 0) {
+            res.status(200).json({
+                id: candidate.rows[0].id,
+                first_name: candidate.rows[0].firstname,
+                last_name: candidate.rows[0].lastname,
+                email: candidate.rows[0].email,
+                password: candidate.rows[0].pass
+            })
+        } else {
+            res.status(401).json({
+                message: "Пользователь не найден."
+            })
+        }
+    }
+
     async login(req, res) {
         const {email, pass } = req.body
         let candidate = await db.query('SELECT * FROM CLIENT WHERE email = $1', [email])
@@ -54,6 +73,8 @@ class AuthController {
             newUser.rows.length > 0 ? res.status(201).json({status: "ok"}) : res.status(400).json("Error");
         }
     }
+
+
 }
 
 module.exports = new AuthController()

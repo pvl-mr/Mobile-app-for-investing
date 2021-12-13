@@ -14,6 +14,9 @@
         android:theme="@style/Theme.InvestingMobileApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AccountActivity"
+            android:exported="true" />
+        <activity
             android:name=".ClientMainActivity"
             android:exported="true" />
         <activity
