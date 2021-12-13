@@ -13,7 +13,10 @@ class BondController {
 
     async getBonds(req, res) {
         const bonds = await db.query(`SELECT * FROM bond`)
-        bonds.rows.length > 0 ? res.json(bonds.rows) : res.status(400).json("Bonds doesn't exist");
+        bonds.rows.length > 0 ? res.status(200).json({
+            status: 'ok',
+            data: bonds.rows
+        }) : res.status(400).json("Bonds doesn't exist");
     }
 
     async updateBond(req, res) {

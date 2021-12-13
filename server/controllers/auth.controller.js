@@ -10,10 +10,6 @@ class AuthController {
         if (candidate.rowCount == 0) candidate = await db.query('SELECT * FROM ANALYST WHERE email = $1', [email])
         if (candidate.rowCount > 0) {
             // const isMatch = bcrypt.compareSync(pass, candidate.rows[0].pass)
-            console.log('email', email);
-            console.log('pass', pass);
-            console.log('candidate.rows[0].pass', candidate.rows[0].pass);
-
             const isMatch = (pass === candidate.rows[0].pass)
                 if (isMatch) {
                     const token = jwt.sign({

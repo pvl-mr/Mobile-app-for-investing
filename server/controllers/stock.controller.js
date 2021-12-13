@@ -13,7 +13,10 @@ class StockController {
 
     async getStocks(req, res) {
         const stocks = await db.query(`SELECT * FROM stock`)
-        stocks.rows.length > 0 ? res.json(stocks.rows) : res.status(400).json("Stocks doesn't exist");
+        stocks.rows.length > 0 ? res.status(200).json({
+            status: 'ok',
+            data: stocks.rows
+        }) : res.status(400).json("Stocks doesn't exist");
     }
 
     async updateStock(req, res) {

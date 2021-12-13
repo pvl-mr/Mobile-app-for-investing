@@ -2,57 +2,31 @@ package com.example.investingmobileapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BondsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.investingmobileapp.RequestServices.BondServices;
+import com.example.investingmobileapp.interfaces.IGetInstrumentResponse;
+import com.example.investingmobileapp.models.InstrumentModel;
+
+import java.util.ArrayList;
+
+
 public class BondsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    ArrayList<InstrumentModel> bonds = new ArrayList<InstrumentModel>();
     public BondsFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BondFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BondsFragment newInstance(String param1, String param2) {
-        BondsFragment fragment = new BondsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -60,5 +34,36 @@ public class BondsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bonds, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        setData();
+    }
+
+    public void setData(){
+        BondServices service = new BondServices(getContext());
+        service.getBonds(new IGetInstrumentResponse() {
+            @Override
+            public void onError(String message) {
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(ArrayList<InstrumentModel> instrumentModels) {
+                RecyclerView recyclerView = getView().findViewById(R.id.listBonds);
+                // определяем слушателя нажатия элемента в списке
+                InstrumentAdapter.OnInstrumentClickListener stateClickListener = new InstrumentAdapter.OnInstrumentClickListener() {
+                    @Override
+                    public void OnInstrumentClick(InstrumentModel state, int position) {
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Был выбран пункт " + state.getName(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                };
+                InstrumentAdapter adapter = new InstrumentAdapter(getActivity(), instrumentModels, stateClickListener);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 }

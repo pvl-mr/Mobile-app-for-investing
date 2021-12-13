@@ -20,19 +20,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class StockServices {
+public class BondServices {
     public static final String LOCALHOST_SERVER = "http://192.168.0.102:5000/";
 
     Context context;
     String userId;
     JSONObject array;
-    ArrayList<InstrumentModel> stocks = new ArrayList<>();
-    public StockServices(Context context) {
+    ArrayList<InstrumentModel> bonds = new ArrayList<>();
+    public BondServices(Context context) {
         this.context = context;
     }
 
-    public void getStocks(final IGetInstrumentResponse getInstrumentResponse){
-        String url = LOCALHOST_SERVER + "stock";
+    public void getBonds(final IGetInstrumentResponse getInstrumentResponse){
+        String url = LOCALHOST_SERVER + "bond";
         JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -41,13 +41,13 @@ public class StockServices {
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject obj = arr.getJSONObject(i);
                         int id = obj.getInt("id");
-                        String stock_name = obj.getString("stockname");
-                        String stock_desc = obj.getString("stockdesc");
-                        float stock_price = (float) obj.getDouble("price");
-                        InstrumentModel temp = new InstrumentModel(id, stock_name, stock_desc, stock_price, "stock");
-                        stocks.add(temp);
+                        String bond_name = obj.getString("bondname");
+                        String bond_desc = obj.getString("bonddesc");
+                        float bond_price = (float) obj.getDouble("price");
+                        InstrumentModel temp = new InstrumentModel(id, bond_name, bond_desc, bond_price, "bond");
+                        bonds.add(temp);
                     }
-                    getInstrumentResponse.onResponse(stocks);
+                    getInstrumentResponse.onResponse(bonds);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -56,7 +56,7 @@ public class StockServices {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                getInstrumentResponse.onError("Не удалось найти акции");
+                getInstrumentResponse.onError("Не удалось найти облигации");
             }
         });
         MySingleton.getInstance(context).addToRequestQueue(jsonObject);
