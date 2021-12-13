@@ -9,8 +9,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.investingmobileapp.PortfolioActivity;
 import com.example.investingmobileapp.helpers.MySingleton;
 import com.example.investingmobileapp.interfaces.IGetInstrumentResponse;
+import com.example.investingmobileapp.interfaces.IPortfolioCreateResponse;
 import com.example.investingmobileapp.interfaces.IPortfolioResponse;
 import com.example.investingmobileapp.interfaces.IRegisterResponse;
 import com.example.investingmobileapp.models.InstrumentModel;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 
 public class PortfolioServices {
     public static final String LOCALHOST_SERVER = "http://192.168.0.102:5000/portfolio/";
+    public static final String LOCALHOST_SERVER_ADD = "http://192.168.0.102:5000/portfolioStock";
 
     Context context;
     String userId;
@@ -65,5 +68,42 @@ public class PortfolioServices {
         });
         MySingleton.getInstance(context).addToRequestQueue(jsonObject);
     }
+
+    public void createPortfolio(JSONObject body, final IPortfolioCreateResponse portfolioCreateResponse){
+        String url = LOCALHOST_SERVER;
+        JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                portfolioCreateResponse.onResponse("Портфель добавлен");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("jsonbody1", body.toString());
+                portfolioCreateResponse.onError(body.toString());
+            }
+        });
+        MySingleton.getInstance(context).addToRequestQueue(jsonObject);
+    }
+
+    public void addStockToPortfolio(JSONObject body, final IPortfolioCreateResponse portfolioCreateResponse){
+        String url = LOCALHOST_SERVER_ADD;
+        JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                portfolioCreateResponse.onResponse("Акция добавлена в портфель");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                portfolioCreateResponse.onError("Акцию добавить в портфель не удалось");
+            }
+        });
+        MySingleton.getInstance(context).addToRequestQueue(jsonObject);
+    }
+
+
 
 }

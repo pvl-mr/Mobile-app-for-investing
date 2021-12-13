@@ -1,5 +1,6 @@
 package com.example.investingmobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.investingmobileapp.RequestServices.PortfolioServices;
@@ -21,7 +23,9 @@ import java.util.ArrayList;
 
 public class PortfoliosFragment extends Fragment {
 
-    ArrayList<PortfolioModel> portfolios = new ArrayList<PortfolioModel>();
+    public static ArrayList<PortfolioModel> portfolios = new ArrayList<PortfolioModel>();
+    Button btnAddPort;
+    String user_id;
     public PortfoliosFragment() {
         // Required empty public constructor
     }
@@ -40,11 +44,24 @@ public class PortfoliosFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setData();
+        init();
+    }
+
+    public void init(){
+        btnAddPort = getView().findViewById(R.id.btnAddPortfolio);
+        btnAddPort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), PortfolioActivity.class);
+                intent.putExtra("user_id", user_id);
+                startActivity(intent);
+            }
+        });
     }
 
     public void setData(){
         Bundle arguments = getActivity().getIntent().getExtras();
-        String user_id = arguments.get("user_id").toString();
+        user_id = arguments.get("user_id").toString();
         PortfolioServices service = new PortfolioServices(getContext());
         RecyclerView recyclerView = getView().findViewById(R.id.listPortfolios);
 
@@ -68,6 +85,7 @@ public class PortfoliosFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                     }
                 };
+                portfolios = portfolioModels;
                 PortfolioAdapter adapter = new PortfolioAdapter(getActivity(), portfolioModels, stateClickListener);
                 recyclerView.setAdapter(adapter);
             }

@@ -2,6 +2,7 @@ const db = require('../db')
 class PortfolioController {
     async createPortfolio(req, res) {
         const {years, goal, client_id} = req.body
+        console.log('reg.body@@@@@@@@@', req.body);
         const getRandomIntInclusive = (min, max) => {
             min = Math.ceil(min);
             max = Math.floor(max);
@@ -16,7 +17,7 @@ class PortfolioController {
 
         const newPortfolio = await db.query(`INSERT INTO portfolio (years, goal, clientid, analystid) values ($1, $2, $3, $4) RETURNING * `, [years, goal, client_id, analyst_id])
 
-        newPortfolio.rows.length > 0 ? res.json(newPortfolio.rows[0]) : res.status(400).json("Error");
+        newPortfolio.rows.length > 0 ? res.status(201).json(newPortfolio.rows[0]) : res.status(400).json("Error");
     }
     async getPortfolio(req, res) {
         const id = req.params.id;

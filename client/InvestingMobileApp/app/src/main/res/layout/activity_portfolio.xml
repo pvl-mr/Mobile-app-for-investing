@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".PortfolioActivity">
+
+    <EditText
+        android:id="@+id/inputGoal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/input_background"
+        android:hint="Цель"
+        android:paddingLeft="20sp"
+        android:paddingTop="10sp"
+        android:paddingRight="10sp"
+        android:paddingBottom="10sp"
+        android:textColorHint="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/inputYears"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="38dp"
+        android:background="@drawable/input_background"
+        android:hint="Срок"
+        android:paddingLeft="20sp"
+        android:paddingTop="10sp"
+        android:paddingRight="10sp"
+        android:paddingBottom="10sp"
+        android:textColorHint="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="@+id/inputGoal"
+        app:layout_constraintStart_toStartOf="@+id/inputGoal"
+        app:layout_constraintTop_toBottomOf="@+id/inputGoal" />
+
+    <Button
+        android:id="@+id/btnPortOk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/btn_background"
+        android:text="Button"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/inputYears"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/inputYears"
+        app:layout_constraintTop_toBottomOf="@+id/inputYears"
+        app:layout_constraintVertical_bias="0.73" />
+</androidx.constraintlayout.widget.ConstraintLayout>

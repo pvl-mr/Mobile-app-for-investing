@@ -22,7 +22,7 @@ public class UserServices {
     public static final String LOCALHOST_SERVER = "http://192.168.0.102:5000/";
 
     Context context;
-    String userId;
+    public static String userId = "";
     UserModel temp;
 
     public UserServices(Context context) {
