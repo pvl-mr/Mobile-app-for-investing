@@ -1,8 +1,8 @@
 const db = require('../db')
 class BondController {
     async createBond(req, res) {
-        const {bond_name, bond_desc} = req.body
-        const newBond = await db.query(`INSERT INTO bond (bondName, bondDesc) values ($1, $2) RETURNING * `, [bond_name, bond_desc])
+        const {bond_name, bond_desc, bond_price} = req.body
+        const newBond = await db.query(`INSERT INTO bond (bondName, bondDesc, price) values ($1, $2, $3) RETURNING * `, [bond_name, bond_desc, bond_price])
         newBond.rows.length > 0 ? res.json(newBond.rows[0]) : res.status(400).json("Error");
     }
     async getBond(req, res) {

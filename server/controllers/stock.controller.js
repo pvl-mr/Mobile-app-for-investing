@@ -1,8 +1,8 @@
 const db = require('../db')
 class StockController {
     async createStock(req, res) {
-        const {stock_name, stock_desc} = req.body
-        const newStock = await db.query(`INSERT INTO stock (stockName, stockDesc) values ($1, $2) RETURNING * `, [stock_name, stock_desc])
+        const {stock_name, stock_desc, stock_price} = req.body
+        const newStock = await db.query(`INSERT INTO stock (stockName, stockDesc, price) values ($1, $2, $3) RETURNING * `, [stock_name, stock_desc, stock_price])
         newStock.rows.length > 0 ? res.json(newStock.rows[0]) : res.status(400).json("Error");
     }
     async getStock(req, res) {

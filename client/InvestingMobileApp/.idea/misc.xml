@@ -5,9 +5,16 @@
       <map>
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/drawable/btn_background.xml" value="0.2703125" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/drawable/input_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_client_main.xml" value="0.264" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_login.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_main_user.xml" value="0.176" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_register.xml" value="0.264" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/fragment_account.xml" value="0.24010416666666667" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/fragment_bond.xml" value="0.1" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/fragment_main_activity_user.xml" value="0.13229166666666667" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/fragment_portfolios.xml" value="0.1" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/fragment_stocks.xml" value="0.1" />
       </map>
     </option>
   </component>

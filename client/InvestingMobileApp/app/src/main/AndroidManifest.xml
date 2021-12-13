@@ -14,7 +14,7 @@
         android:theme="@style/Theme.InvestingMobileApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".helpers.ClientMainActivity"
+            android:name=".ClientMainActivity"
             android:exported="true" />
         <activity
             android:name=".LoginActivity"
@@ -28,9 +28,6 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"></activity>
     </application>
 
 </manifest>

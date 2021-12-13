@@ -80,6 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(String message) {
                 Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+
             }
         });
     }
