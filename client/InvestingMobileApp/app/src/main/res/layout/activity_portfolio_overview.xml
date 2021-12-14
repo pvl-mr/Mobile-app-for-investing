@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/listStockPortfolio" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/textViewMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -99,17 +99,17 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="@+id/textView12"
+        app:layout_constraintEnd_toEndOf="@+id/textViewMessage"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintStart_toStartOf="@+id/textViewMessage"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage" />
 
     <Button
         android:id="@+id/btnSendMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_background"
-        android:text="Отправить"
+        android:text="ОК"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/inputMessage"

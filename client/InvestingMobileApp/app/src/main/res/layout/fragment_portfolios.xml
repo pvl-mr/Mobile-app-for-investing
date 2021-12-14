@@ -27,8 +27,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listPortfolios"
-            android:layout_width="420dp"
-            android:layout_height="450dp"
+            android:layout_width="398dp"
+            android:layout_height="298dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,6 +63,21 @@
             app:layout_constraintHorizontal_bias="0.047"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewPortfolios" />
+
+        <Button
+            android:id="@+id/btnPdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="88dp"
+            android:background="@drawable/btn_background"
+            android:text="Отчёт"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btnAddPortfolio"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/btnAddPortfolio"
+            app:layout_constraintTop_toBottomOf="@+id/btnAddPortfolio"
+            app:layout_constraintVertical_bias="0.43" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -35,6 +35,7 @@ public class PortfolioActivityOverview extends AppCompatActivity {
     RecyclerView rvListBonds;
     EditText message;
     String messageStr;
+    String status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,8 @@ public class PortfolioActivityOverview extends AppCompatActivity {
     public void init() {
         Bundle arguments = getIntent().getExtras();
         portfolio_id = arguments.get("portfolio_id").toString();
+        status = arguments.get("status").toString();
+
         goal = arguments.get("goal").toString();
         years = arguments.get("years").toString();
         tvInfo = findViewById(R.id.portInfo);
@@ -52,15 +55,17 @@ public class PortfolioActivityOverview extends AppCompatActivity {
         rvListStocks = findViewById(R.id.listStockPortfolio);
         rvListBonds = findViewById(R.id.listBondPortfolio);
         message = findViewById(R.id.inputMessage);
+
+        if (status.equalsIgnoreCase("Client")) {
+           // message.setVisibility(View.GONE);
+            findViewById(R.id.textViewMessage).setVisibility(View.GONE);
+            btnSend.setOnClickListener(view -> sendPortfolio());
+        } else if (status.equalsIgnoreCase("Analyst")) {
+            messageStr = message.getText().toString();
+            btnSend.setOnClickListener(view -> sendMessage(messageStr));
+        }
         setStocks();
         setBonds();
-        messageStr = message.getText().toString();
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage(messageStr);
-            }
-        });
     }
 
     public void setStocks(){
@@ -119,6 +124,21 @@ public class PortfolioActivityOverview extends AppCompatActivity {
             e.printStackTrace();
         }
         service.sendMessage(jsonBody, new ISimpleResponse() {
+            @Override
+            public void onError(String message) {
+                Toast.makeText(PortfolioActivityOverview.this, message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(String message) {
+                Toast.makeText(PortfolioActivityOverview.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void sendPortfolio(){
+        PortfolioServices service = new PortfolioServices(this);
+        service.sendPortfolio(portfolio_id, new ISimpleResponse() {
             @Override
             public void onError(String message) {
                 Toast.makeText(PortfolioActivityOverview.this, message, Toast.LENGTH_SHORT).show();

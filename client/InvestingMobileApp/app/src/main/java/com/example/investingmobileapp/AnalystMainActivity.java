@@ -55,6 +55,7 @@ public class AnalystMainActivity extends AppCompatActivity {
                         String years = state.getYears()+"";
                         Intent intent = new Intent(AnalystMainActivity.this, PortfolioActivityOverview.class);
                         intent.putExtra("portfolio_id", portfolioId);
+                        intent.putExtra("status", "analyst");
                         intent.putExtra("goal", goal);
                         intent.putExtra("years", years);
                         startActivity(intent);

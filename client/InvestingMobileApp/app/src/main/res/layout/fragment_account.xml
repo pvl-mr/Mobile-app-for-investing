@@ -68,6 +68,7 @@
             app:layout_constraintStart_toStartOf="@+id/textViewLastName"
             app:layout_constraintTop_toBottomOf="@+id/textViewLastName"
             app:layout_constraintVertical_bias="0.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
