@@ -41,9 +41,10 @@ public class PortfolioAdapter  extends RecyclerView.Adapter<PortfolioAdapter.Vie
     public void onBindViewHolder(PortfolioAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PortfolioModel _portfolioModel = portfolioModels.get(position);
 
+        String message = (_portfolioModel.getMessage() == null) ? "" : "\nАнализ: " + _portfolioModel.getMessage();
         holder.flagView.setImageResource(R.drawable.ic_portfolio);
         holder.nameView.setText("Цель: " + _portfolioModel.getGoal());
-        holder.capitalView.setText("Срок: " + _portfolioModel.getYears());
+        holder.capitalView.setText("Срок: " + _portfolioModel.getYears() + message);
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override

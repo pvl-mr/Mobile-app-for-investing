@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.investingmobileapp.RequestServices.PortfolioServices;
+import com.example.investingmobileapp.interfaces.ISimpleResponse;
 import com.example.investingmobileapp.interfaces.IPortfolioResponse;
 import com.example.investingmobileapp.models.PortfolioModel;
 
@@ -66,7 +67,7 @@ public class PortfoliosFragment extends Fragment {
         RecyclerView recyclerView = getView().findViewById(R.id.listPortfolios);
 
         Log.d("view----", getView().toString());
-        service.getPortfolios(user_id, new IPortfolioResponse() {
+        service.getPortfolios("client", user_id, new IPortfolioResponse() {
 
             @Override
             public void onError(String message) {
@@ -80,9 +81,18 @@ public class PortfoliosFragment extends Fragment {
                 PortfolioAdapter.OnPortfolioClickListener stateClickListener = new PortfolioAdapter.OnPortfolioClickListener() {
                     @Override
                     public void OnPortfolioClick(PortfolioModel state, int position) {
+                        String portfolioId = state.getId()+"";
+                        service.sendPortfolio(portfolioId, new ISimpleResponse() {
+                            @Override
+                            public void onError(String message) {
+                                Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                            }
 
-                        Toast.makeText(getActivity().getApplicationContext(), "Был выбран пункт " + state.getGoal(),
-                                Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onResponse(String message) {
+                                Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 };
                 portfolios = portfolioModels;

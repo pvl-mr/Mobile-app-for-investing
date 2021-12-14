@@ -7,6 +7,7 @@ public class PortfolioModel {
     private int clientId;
     private int id;
     private int analystId;
+    private String message;
 
 
 
@@ -59,7 +60,16 @@ public class PortfolioModel {
 
     @Override
     public String toString() {
+        String message = (getMessage() == null) ? "" : "\nСообщение от аналитика: " + getMessage();
         return "Цель: " + getGoal() +
-                "\nСрок: " + getYears();
+                "\nСрок: " + getYears() + message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

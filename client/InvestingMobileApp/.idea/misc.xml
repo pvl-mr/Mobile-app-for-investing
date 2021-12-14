@@ -9,12 +9,15 @@
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/drawable/input_background.xml" value="0.2703125" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/drawable/portfolio_background.xml" value="0.196875" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_account.xml" value="0.2" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_add_bond_to_portfolio.xml" value="0.10572916666666667" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_add_stock_to_portfolio.xml" value="0.264" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_analyst_main.xml" value="0.264" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_client_main.xml" value="0.264" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_login.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_main_user.xml" value="0.176" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_portfolio.xml" value="0.2" />
+        <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_portfolio_overview.xml" value="0.2" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/activity_register.xml" value="0.264" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/fragment_account.xml" value="0.17636837532580366" />
         <entry key="..\:/Users/pavlo/AndroidStudioProjects/InvestingApp/client/InvestingMobileApp/app/src/main/res/layout/fragment_bond.xml" value="0.1" />

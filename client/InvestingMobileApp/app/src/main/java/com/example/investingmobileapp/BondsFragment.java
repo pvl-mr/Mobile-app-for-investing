@@ -1,5 +1,6 @@
 package com.example.investingmobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -43,7 +44,7 @@ public class BondsFragment extends Fragment {
 
     public void setData(){
         BondServices service = new BondServices(getContext());
-        service.getBonds(new IGetInstrumentResponse() {
+        service.getBonds("all", "", new IGetInstrumentResponse() {
             @Override
             public void onError(String message) {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
@@ -59,6 +60,14 @@ public class BondsFragment extends Fragment {
 
                         Toast.makeText(getActivity().getApplicationContext(), "Был выбран пункт " + state.getName(),
                                 Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), AddBondToPortfolio.class);
+                        InstrumentModel stock = new InstrumentModel(state.getId(), state.getName(), state.getDescription(), state.getPrice(), "stock");
+
+                        intent.putExtra("bond-id", state.getId());
+                        intent.putExtra("bond-name", state.getName());
+                        intent.putExtra("bond-desc", state.getDescription());
+                        intent.putExtra("bond-price", state.getPrice());
+                        startActivity(intent);
                     }
                 };
                 InstrumentAdapter adapter = new InstrumentAdapter(getActivity(), instrumentModels, stateClickListener);

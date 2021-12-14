@@ -27,24 +27,38 @@ public class BondServices {
     String userId;
     JSONObject array;
     ArrayList<InstrumentModel> bonds = new ArrayList<>();
+    String url;
     public BondServices(Context context) {
         this.context = context;
     }
 
-    public void getBonds(final IGetInstrumentResponse getInstrumentResponse){
-        String url = LOCALHOST_SERVER + "bond";
+    public void getBonds(String status, String portfolioId, final IGetInstrumentResponse getInstrumentResponse){
+        if (status.equalsIgnoreCase("all")){
+            url = LOCALHOST_SERVER + "bond";
+        } else if (status.equalsIgnoreCase("portfolio")) {
+            url = LOCALHOST_SERVER+"portfolioBonds/"+ portfolioId;
+        } else {
+            url = "";
+        }
+
         JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray arr = response.getJSONArray("data");
                     for (int i = 0; i < arr.length(); i++) {
+                        int id;
+                        InstrumentModel temp;
                         JSONObject obj = arr.getJSONObject(i);
-                        int id = obj.getInt("id");
                         String bond_name = obj.getString("bondname");
                         String bond_desc = obj.getString("bonddesc");
                         float bond_price = (float) obj.getDouble("price");
-                        InstrumentModel temp = new InstrumentModel(id, bond_name, bond_desc, bond_price, "bond");
+                        if (status.equalsIgnoreCase("all")) {
+                            id = obj.getInt("id");
+                            temp = new InstrumentModel(id, bond_name, bond_desc, bond_price, "stock");
+                        } else {
+                            temp = new InstrumentModel(0, bond_name, bond_desc, bond_price, "stock");
+                        }
                         bonds.add(temp);
                     }
                     getInstrumentResponse.onResponse(bonds);

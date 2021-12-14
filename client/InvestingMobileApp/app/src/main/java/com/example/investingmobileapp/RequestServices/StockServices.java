@@ -27,12 +27,22 @@ public class StockServices {
     String userId;
     JSONObject array;
     ArrayList<InstrumentModel> stocks = new ArrayList<>();
+    String url;
     public StockServices(Context context) {
         this.context = context;
     }
 
-    public void getStocks(final IGetInstrumentResponse getInstrumentResponse){
-        String url = LOCALHOST_SERVER + "stock";
+    public void getStocks(String status, String portfolioId, final IGetInstrumentResponse getInstrumentResponse){
+        if (status.equalsIgnoreCase("all")){
+            url = LOCALHOST_SERVER + "stock";
+        } else if (status.equalsIgnoreCase("portfolio")) {
+            url = LOCALHOST_SERVER+"portfolioStocks/"+ portfolioId;
+        } else {
+            url = "";
+        }
+
+        Log.d("90333", url);
+
         JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -40,23 +50,31 @@ public class StockServices {
                     JSONArray arr = response.getJSONArray("data");
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject obj = arr.getJSONObject(i);
-                        int id = obj.getInt("id");
+                        int id;
+                        InstrumentModel temp;
+
                         String stock_name = obj.getString("stockname");
                         String stock_desc = obj.getString("stockdesc");
                         float stock_price = (float) obj.getDouble("price");
-                        InstrumentModel temp = new InstrumentModel(id, stock_name, stock_desc, stock_price, "stock");
+                        if (status.equalsIgnoreCase("all")) {
+                            id = obj.getInt("id");
+                            temp = new InstrumentModel(id, stock_name, stock_desc, stock_price, "stock");
+                        } else {
+                            temp = new InstrumentModel(0, stock_name, stock_desc, stock_price, "stock");
+                        }
                         stocks.add(temp);
                     }
                     getInstrumentResponse.onResponse(stocks);
 
                 } catch (JSONException e) {
+
                     e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                getInstrumentResponse.onError("Не удалось найти акции");
+                getInstrumentResponse.onError(url);
             }
         });
         MySingleton.getInstance(context).addToRequestQueue(jsonObject);

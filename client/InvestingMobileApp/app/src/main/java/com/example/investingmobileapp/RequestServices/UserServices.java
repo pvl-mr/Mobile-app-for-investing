@@ -23,6 +23,7 @@ public class UserServices {
 
     Context context;
     public static String userId = "";
+    String status;
     UserModel temp;
 
     public UserServices(Context context) {
@@ -36,12 +37,7 @@ public class UserServices {
             public void onResponse(JSONObject response) {
                 userId = "";
                 Log.d("user_id", response.toString());
-                try {
-                    userId = response.getString("user_id");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                loginResponse.onResponse(userId);
+                loginResponse.onResponse(response);
             }
         }, new Response.ErrorListener() {
             @Override

@@ -23,6 +23,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView noAccount;
     Button btnLogin;
     UserServices userServices;
+    String userId;
+    String status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,9 +65,20 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponse(String userId) {
+            public void onResponse(JSONObject response) {
+                try {
+                    userId = response.getString("user_id");
+                    status = response.getString("status");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Intent intent;
+                if(status.equalsIgnoreCase("analyst")) {
+                    intent = new Intent(LoginActivity.this, AnalystMainActivity.class);
+                } else {
+                    intent = new Intent(LoginActivity.this, ClientMainActivity.class);
+                }
                 Toast.makeText(LoginActivity.this, userId, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, ClientMainActivity.class);
                 intent.putExtra("user_id", userId);
                 startActivity(intent);
             }

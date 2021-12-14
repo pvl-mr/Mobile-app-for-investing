@@ -25,8 +25,8 @@ class AuthController {
 
     async login(req, res) {
         const {email, pass } = req.body
+        console.log(req.body)
         let candidate = await db.query('SELECT * FROM CLIENT WHERE email = $1', [email])
-        if (candidate.rowCount == 0) candidate = await db.query('SELECT * FROM ANALYST WHERE email = $1', [email])
         if (candidate.rowCount > 0) {
             // const isMatch = bcrypt.compareSync(pass, candidate.rows[0].pass)
             const isMatch = (pass === candidate.rows[0].pass)
@@ -36,7 +36,7 @@ class AuthController {
                         userId: candidate.rows[0].id
                     }, config.jwtKey, {expiresIn: config.ttl})
                     res.status(200).json({
-                        status: "ok",
+                        status: "client",
                         user_id: candidate.rows[0].id
                     })
                 } else {
@@ -44,11 +44,31 @@ class AuthController {
                         message: "Пароли не совпадают."
                     })
                 }
-        } else {
+        } else if ((await db.query('SELECT * FROM ANALYST WHERE email = $1', [email])).rowCount > 0){
+            // const isMatch = bcrypt.compareSync(pass, candidate.rows[0].pass)
+            let candidate = await db.query('SELECT * FROM ANALYST WHERE email = $1', [email])
+            const isMatch = (pass === candidate.rows[0].pass)
+                if (isMatch) {
+                    const token = jwt.sign({
+                        email: candidate.rows[0].email,
+                        userId: candidate.rows[0].id
+                    }, config.jwtKey, {expiresIn: config.ttl})
+                    res.status(200).json({
+                        status: "analyst",
+                        user_id: candidate.rows[0].id
+                    })
+                } else {
+                    res.status(401).json({
+                        message: "Пароли не совпадают."
+                    })
+                }
+        } else
+          {
             res.status(409).json({
                 message: "Пользователя с таким email не существует."
             })
         }
+        
     }
 
     async register(req, res) {
@@ -64,7 +84,9 @@ class AuthController {
             // const salt = bcrypt.genSaltSync(10)
             // const cr_password = bcrypt.hashSync(pass, salt)
             let newUser;
+            console.log(code);
             if (code != null) {
+                console.log(email)
                 newUser = await db.query(`INSERT INTO ANALYST (firstName, lastName, email, pass, code) values ($1, $2, $3, $4, $5) RETURNING * `, [first_name, last_name, email, pass, code])
             } else {
                 newUser = await db.query(`INSERT INTO CLIENT (firstName, lastName, email, pass) values ($1, $2, $3, $4) RETURNING * `, [first_name, last_name, email, pass])

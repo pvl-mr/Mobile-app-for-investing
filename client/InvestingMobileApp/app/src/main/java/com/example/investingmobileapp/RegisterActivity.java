@@ -71,6 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
         jsonBody.put("last_name", lastName);
         jsonBody.put("email", email);
         jsonBody.put("pass", password);
+        if (code != "") {
+            jsonBody.put("code", code);
+        }
         userServices.register(jsonBody, new IRegisterResponse() {
             @Override
             public void onError(String message) {

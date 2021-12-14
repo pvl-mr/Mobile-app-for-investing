@@ -44,6 +44,32 @@ class PortfolioController {
         const portfolio = await db.query(`DELETE from portfolio where id = $1 RETURNING *`, [id])
         portfolio.rows.length > 0 ? res.json(portfolio.rows[0]) : res.status(400).json("Portfolio doesn't exist or already deleted");
     }
+
+    async sendPortfolio(req, res) {
+        const id = req.params.id
+        const portfolio = await db.query(`UPDATE portfolio set sendstatus = $1 WHERE id = $2 RETURNING *`, ["send", id])
+        portfolio.rows.length > 0 ? res.json(portfolio.rows[0]) : res.status(400).json("Portfolio was send to analytics");
+    }
+
+    async getPortfoliosForAnalyst(req, res) {
+        const analyst_id = req.params.id
+        const portfolios = await db.query(`SELECT * FROM portfolio where (sendstatus = $1 and analystid = $2)`, ["send", analyst_id])
+        if (portfolios.rows.length > 0) {
+            res.status(200).json({
+                data: portfolios.rows
+            });
+        } else {
+            res.status(409).json({
+                message: "Портфели не найдены."
+            })
+        }
+    }
+
+    async sendMessage(req, res) {
+        const {portfolio_id, message} = req.body
+        const portfolio = await db.query(`UPDATE portfolio set message = $1 WHERE id = $2 RETURNING *`, [message, portfolio_id])
+        portfolio.rows.length > 0 ? res.json(portfolio.rows[0]) : res.status(400).json("Message not send");
+    }
 }
 
 module.exports = new PortfolioController()

@@ -3,6 +3,8 @@ class PortfolioBondController {
     async addBondToPortfolio(req, res) {
         console.log('-----------------')
         const {count, bond_id, portfolio_id} = req.body
+        console.log("bond_id", req.body.bond_id)
+        console.log("req.body", req.body)
         let newPortfolioBond = await db.query(`SELECT * FROM portfolio_bond where (bondid = $1 and portfolioid = $2)`, [bond_id, portfolio_id])
         let isNew = newPortfolioBond.rows.length > 0 ? 0 : 1
         if (isNew) {
@@ -18,12 +20,15 @@ class PortfolioBondController {
 
     async getPortfolioBonds(req, res) {
         const id = req.params.id;     
-        const portfolioBond = await db.query(`SELECT bondname, count, bonddesc
+        const portfolioBond = await db.query(`SELECT bondname, count, bonddesc, price
                                                from portfolio_bond, bond
                                                where (portfolio_bond.portfolioid = $1
                                                and portfolio_bond.bondid = bond.id)
                                               `, [id])
-        portfolioBond.rows.length > 0 ? res.json(portfolioBond.rows) : res.status(400).json("PortfolioBond doesn't exist");
+        portfolioBond.rows.length > 0 ? res.status(200).json({
+        status: 'ok',
+        data: portfolioBond.rows
+    }) : res.status(400).json("Bonds doesn't exist");
     }
 
     async getPortfolioBond(req, res) {

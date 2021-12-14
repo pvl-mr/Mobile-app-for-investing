@@ -45,7 +45,7 @@ public class StocksFragment extends Fragment {
 
     public void setData(){
         StockServices service = new StockServices(getContext());
-        service.getStocks(new IGetInstrumentResponse() {
+        service.getStocks("all", "", new IGetInstrumentResponse() {
             @Override
             public void onError(String message) {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();

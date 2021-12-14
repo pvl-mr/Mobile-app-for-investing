@@ -17,12 +17,15 @@ class PortfolioStockController {
 
     async getPortfolioStocks(req, res) {
         const id = req.params.id;     
-        const portfolioStock = await db.query(`SELECT stockname, count, stockdesc
+        const portfolioStock = await db.query(`SELECT stockname, price, count, stockdesc
                                                from portfolio_stock, stock
                                                where (portfolio_stock.portfolioid = $1
                                                and portfolio_stock.stockid = stock.id)
                                               `, [id])
-        portfolioStock.rows.length > 0 ? res.json(portfolioStock.rows) : res.status(400).json("PortfolioStock doesn't exist");
+        portfolioStock.rows.length > 0 ? res.status(200).json({
+            status: 'ok',
+            data: portfolioStock.rows
+        }) : res.status(400).json("Stocks doesn't exist");
     }
 
     async getPortfolioStock(req, res) {

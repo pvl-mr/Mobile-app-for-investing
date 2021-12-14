@@ -14,6 +14,15 @@
         android:theme="@style/Theme.InvestingMobileApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PortfolioActivityOverview"
+            android:exported="true" />
+        <activity
+            android:name=".AnalystMainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddBondToPortfolio"
+            android:exported="true" />
+        <activity
             android:name=".AddStockToPortfolio"
             android:exported="true" />
         <activity

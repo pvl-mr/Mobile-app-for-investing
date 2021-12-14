@@ -8,11 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.investingmobileapp.RequestServices.PortfolioServices;
-import com.example.investingmobileapp.interfaces.IPortfolioCreateResponse;
+import com.example.investingmobileapp.interfaces.ISimpleResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +47,7 @@ public class PortfolioActivity extends AppCompatActivity {
                 }
 //                Toast.makeText(PortfolioActivity.this, jsonBody.toString(), Toast.LENGTH_SHORT).show();
                 Log.d("jsonbody", jsonBody.toString());
-                service.createPortfolio(jsonBody, new IPortfolioCreateResponse() {
+                service.createPortfolio(jsonBody, new ISimpleResponse() {
                     @Override
                     public void onError(String message) {
                         Toast.makeText(PortfolioActivity.this, message, Toast.LENGTH_SHORT).show();
