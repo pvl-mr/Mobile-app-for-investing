@@ -11,7 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.investingmobileapp.RequestServices.UserServices;
+import com.example.investingmobileapp.helpers.DatabaseHelper;
 import com.example.investingmobileapp.interfaces.ILoginResponse;
+import com.example.investingmobileapp.models.UserModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login (View view) throws JSONException {
+
         String email = inputEmail.getText().toString();
         String password = inputPassword.getText().toString();
         JSONObject jsonBody = new JSONObject();

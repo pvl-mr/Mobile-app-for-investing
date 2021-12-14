@@ -59,7 +59,12 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    public void localDbRegister(){
+
+    }
+
     public void register(View view) throws JSONException {
+
         UserServices userServices = new UserServices(this);
         String firstName = inputFirstName.getText().toString();
         String lastName = inputLastName.getText().toString();
