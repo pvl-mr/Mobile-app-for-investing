@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,20 +22,18 @@ import android.widget.Toast;
 import com.example.investingmobileapp.RequestServices.BondServices;
 import com.example.investingmobileapp.RequestServices.PortfolioServices;
 import com.example.investingmobileapp.RequestServices.StockServices;
+import com.example.investingmobileapp.helpers.DatabaseHelper;
 import com.example.investingmobileapp.interfaces.IGetInstrumentResponse;
-import com.example.investingmobileapp.interfaces.ISimpleResponse;
 import com.example.investingmobileapp.interfaces.IPortfolioResponse;
 import com.example.investingmobileapp.models.InstrumentModel;
 import com.example.investingmobileapp.models.PortfolioModel;
 import com.example.investingmobileapp.models.ReportModel;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
 
 
 public class PortfoliosFragment extends Fragment {
@@ -47,8 +44,9 @@ public class PortfoliosFragment extends Fragment {
     ArrayList<InstrumentModel> stocks;
     ArrayList<InstrumentModel> bonds;
     ArrayList<ReportModel> reportModels = new ArrayList<>();
+    PortfolioAdapter.OnPortfolioClickListener stateClickListener;
+    RecyclerView recyclerView;
     public PortfoliosFragment() {
-        // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,19 +56,33 @@ public class PortfoliosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_portfolios, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        setData();
         init();
+        getPortfolios();
+        syncPortfolio();
     }
 
     public void init(){
         btnAddPort = getView().findViewById(R.id.btnAddPortfolio);
         btnCreateReport = getView().findViewById(R.id.btnPdf);
+        Bundle arguments = getActivity().getIntent().getExtras();
+        user_id = arguments.get("user_id").toString();
+        recyclerView = getView().findViewById(R.id.listPortfolios);
+        stateClickListener = new PortfolioAdapter.OnPortfolioClickListener() {
+            @Override
+            public void OnPortfolioClick(PortfolioModel state, int position) {
+                Intent intent = new Intent(getContext(), PortfolioActivityOverview.class);
+                intent.putExtra("status", "client");
+                intent.putExtra("portfolio_id", state.getId());
+                intent.putExtra("goal", state.getGoal());
+                intent.putExtra("years", state.getYears());
+                startActivity(intent);
+            }
+        };
         btnAddPort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,41 +104,35 @@ public class PortfoliosFragment extends Fragment {
         });
     }
 
-    public void setData(){
+    public void syncPortfolio(){
+        DatabaseHelper dbHelper = new DatabaseHelper(getActivity());
+        List<PortfolioModel> list = dbHelper.getPortfolios();
+        for (PortfolioModel model: portfolios) {
+            if (!list.contains(model)) {
+                dbHelper.addPortfolio(model);
+            }
+        }
+    }
+
+    public void getPortfolios(){
         portfolios = new ArrayList<>();
-        Bundle arguments = getActivity().getIntent().getExtras();
-        user_id = arguments.get("user_id").toString();
         PortfolioServices service = new PortfolioServices(getContext());
-        RecyclerView recyclerView = getView().findViewById(R.id.listPortfolios);
-
-        Log.d("view----", getView().toString());
         service.getPortfolios("client", user_id, new IPortfolioResponse() {
-
             @Override
             public void onError(String message) {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onResponse(ArrayList<PortfolioModel> portfolioModels) {
-
-                // определяем слушателя нажатия элемента в списке
-                PortfolioAdapter.OnPortfolioClickListener stateClickListener = new PortfolioAdapter.OnPortfolioClickListener() {
-                    @Override
-                    public void OnPortfolioClick(PortfolioModel state, int position) {
-                        Intent intent = new Intent(getContext(), PortfolioActivityOverview.class);
-                        intent.putExtra("status", "client");
-                        intent.putExtra("portfolio_id", state.getId());
-                        intent.putExtra("goal", state.getGoal());
-                        intent.putExtra("years", state.getYears());
-                        startActivity(intent);
-                    }
-                };
-                portfolios = portfolioModels;
-                PortfolioAdapter adapter = new PortfolioAdapter(getActivity(), portfolioModels, stateClickListener);
-                recyclerView.setAdapter(adapter);
+                setData(portfolioModels);
             }
         });
+    }
+
+    public void setData(ArrayList<PortfolioModel> portfolioModels) {
+        portfolios = portfolioModels;
+        PortfolioAdapter adapter = new PortfolioAdapter(getActivity(), portfolioModels, stateClickListener);
+        recyclerView.setAdapter(adapter);
     }
 
 
@@ -179,10 +185,6 @@ public class PortfoliosFragment extends Fragment {
         return percents;
     }
 
-    private void showToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-    }
-
     public void createPdf() throws InterruptedException {
         for (int i = 0; i < portfolios.size(); i++) {
             getData(i);
@@ -201,7 +203,7 @@ public class PortfoliosFragment extends Fragment {
             PdfDocument.Page page = pdfDocument.startPage(pageInfo);
             Canvas c = page.getCanvas();
             for (int i = 0; i < reportModels.size(); i++) {
-                int step = 120*i;
+                int step = 130*i;
                 paint.setColor(Color.BLACK);
                 c.drawText("Портфель " + i, 20, 20+step, paint);
                 c.drawText("Цель " + reportModels.get(i).getGoal(), 20, 40+step, paint);
@@ -218,14 +220,10 @@ public class PortfoliosFragment extends Fragment {
             out.flush();
             pdfDocument.close();
 
-            showToast("Report saved to " + file.getPath());
+            Toast.makeText(getActivity(), "Отчёт успешно сохранён в " + file.getPath(), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-            showToast("Error: " + e.getMessage());
+            Toast.makeText(getActivity(),  "Не удалось сохранить отчёт", Toast.LENGTH_SHORT).show();
         }
-//        } finally {
-//            pdfDocument.close();
-//        }
-
     }
 }

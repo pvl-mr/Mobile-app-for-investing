@@ -20,43 +20,27 @@ public class PortfolioActivity extends AppCompatActivity {
 
     EditText tvgoal, tvyears;
     Button btnOk;
+    String user_id;
+    String goal;
+    int years;
     PortfolioServices service = new PortfolioServices(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portfolio);
         init();
+    }
+
+    public void init(){
+        Bundle arguments = getIntent().getExtras();
+        user_id = arguments.get("user_id").toString();
+        tvgoal = findViewById(R.id.inputGoal);
+        tvyears = findViewById(R.id.inputYears);
+        btnOk = findViewById(R.id.btnPortOk);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String goal = tvgoal.getText().toString();
-                Log.d("4431", tvyears.getText().toString());
-
-                int years = Integer.parseInt(tvyears.getText().toString());
-                Log.d("goal", goal);
-                Log.d("years", years+"");
-                Bundle arguments = getIntent().getExtras();
-                String user_id = arguments.get("user_id").toString();
-                JSONObject jsonBody = new JSONObject();
-                try {
-                    jsonBody.put("goal", goal);
-                    jsonBody.put("years", years);
-                    jsonBody.put("client_id", Integer.parseInt(user_id));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-//                Toast.makeText(PortfolioActivity.this, jsonBody.toString(), Toast.LENGTH_SHORT).show();
-                Log.d("jsonbody", jsonBody.toString());
-                service.createPortfolio(jsonBody, new ISimpleResponse() {
-                    @Override
-                    public void onError(String message) {
-                        Toast.makeText(PortfolioActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onResponse(String message) {
-                        Toast.makeText(PortfolioActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                createPortfolio();
                 Intent intent = new Intent(PortfolioActivity.this, ClientMainActivity.class);
                 intent.putExtra("user_id", user_id);
                 startActivity(intent);
@@ -64,9 +48,31 @@ public class PortfolioActivity extends AppCompatActivity {
         });
     }
 
-    public void init(){
-        tvgoal = findViewById(R.id.inputGoal);
-        tvyears = findViewById(R.id.inputYears);
-        btnOk = findViewById(R.id.btnPortOk);
+    public void createPortfolio(){
+        JSONObject jsonBody = createJson();
+        service.createPortfolio(jsonBody, new ISimpleResponse() {
+            @Override
+            public void onError(String message) {
+                Toast.makeText(PortfolioActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onResponse(String message) {
+                Toast.makeText(PortfolioActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public JSONObject createJson(){
+        goal = tvgoal.getText().toString();
+        years = Integer.parseInt(tvyears.getText().toString());
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("goal", goal);
+            jsonBody.put("years", years);
+            jsonBody.put("client_id", Integer.parseInt(user_id));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonBody;
     }
 }

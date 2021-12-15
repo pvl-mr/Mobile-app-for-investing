@@ -2,14 +2,19 @@ package com.example.investingmobileapp.helpers;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.investingmobileapp.models.PortfolioBondModel;
+import com.example.investingmobileapp.models.PortfolioModel;
+import com.example.investingmobileapp.models.PortfolioStockModel;
 import com.example.investingmobileapp.models.UserModel;
 
-import javax.xml.transform.sax.SAXResult;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ANALYST_TABLE = "analyst";
@@ -91,5 +96,178 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
         return true;
+    }
+
+    public boolean addPortfolio(PortfolioModel portfolioModel){
+        long insert;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(PORTFOLIO_GOAL, portfolioModel.getGoal());
+        cv.put(PORTFOLIO_YEARS, portfolioModel.getYears());
+        cv.put(CLIENT_ID, portfolioModel.getId());
+        cv.put(ANALYST_ID, portfolioModel.getAnalystId());
+        insert = db.insert(PORTFOLIO_TABLE, null, cv);
+        if (insert == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean addStockToPortfolio(PortfolioStockModel portfolioStockModel){
+        long insert;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        int stock_id = portfolioStockModel.getStock_id();
+        int portfolio_id = portfolioStockModel.getPortfolio_id();
+        int count = portfolioStockModel.getCount();
+        cv.put(STOCK_ID, stock_id);
+        cv.put(PORTFOLIO_ID, portfolio_id);
+        cv.put(PORTFOLIO_STOCK_COUNT, count);
+        insert = db.insert(PORTFOLIO_TABLE, null, cv);
+        if (insert == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean addBondToPortfolio(PortfolioBondModel portfolioBondModel){
+        long insert;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        int bond_id = portfolioBondModel.getBond_id();
+        int portfolio_id = portfolioBondModel.getPortfolio_id();
+        int count = portfolioBondModel.getCount();
+        cv.put(STOCK_ID, bond_id);
+        cv.put(PORTFOLIO_ID, portfolio_id);
+        cv.put(PORTFOLIO_STOCK_COUNT, count);
+        insert = db.insert(PORTFOLIO_TABLE, null, cv);
+        if (insert == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<PortfolioModel> getPortfolios(){
+        List<PortfolioModel> list = new ArrayList<>();
+        String queryString = "SELECT * FROM " + PORTFOLIO_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                int years = cursor.getInt(1);
+                String goal = cursor.getString(2);
+                int analyst_id = cursor.getInt(3);
+                int client_id = cursor.getInt(4);
+                PortfolioModel model = new PortfolioModel(id, goal, years, client_id);
+                list.add(model);
+            } while (cursor.moveToNext());
+        } else {
+
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public List<UserModel> getClients(){
+        List<UserModel> list = new ArrayList<>();
+        String queryString = "SELECT * FROM " + CLIENT_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String firstName = cursor.getString(1);
+                String lastName = cursor.getString(2);
+                String email = cursor.getString(3);
+                String pass = cursor.getString(4);
+                UserModel model = new UserModel(id, firstName, lastName, email, pass);
+                list.add(model);
+            } while (cursor.moveToNext());
+        } else {
+
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public List<UserModel> getAnalysts(){
+        List<UserModel> list = new ArrayList<>();
+        String queryString = "SELECT * FROM " + ANALYST_TABLE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String firstName = cursor.getString(1);
+                String lastName = cursor.getString(2);
+                String email = cursor.getString(3);
+                String pass = cursor.getString(4);
+                String code = cursor.getString(5);
+                UserModel model = new UserModel(id, firstName, lastName, email, pass);
+                model.setCode(code);
+                list.add(model);
+            } while (cursor.moveToNext());
+        } else {
+
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public List<UserModel> getUsers(){
+        List<UserModel> allUsers = new ArrayList<>();
+        allUsers.addAll(getClients());
+        allUsers.addAll(getAnalysts());
+        return allUsers;
+    }
+
+    public List<PortfolioStockModel> getStockPortfolios(){
+        List<PortfolioStockModel> list = new ArrayList<>();
+        String queryString = "SELECT * FROM " + TABLE_PORTFOLIO_STOCK;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                int stock_id = cursor.getInt(1);
+                int portfolio_id = cursor.getInt(2);
+                int count = cursor.getInt(3);
+                PortfolioStockModel model = new PortfolioStockModel(portfolio_id, stock_id, count);
+                model.setId(id);
+                list.add(model);
+            } while (cursor.moveToNext());
+        } else {
+
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public List<PortfolioBondModel> getBondPortfolios(){
+        List<PortfolioBondModel> list = new ArrayList<>();
+        String queryString = "SELECT * FROM " + TABLE_PORTFOLIO_BOND;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                int bond_id = cursor.getInt(1);
+                int portfolio_id = cursor.getInt(2);
+                int count = cursor.getInt(3);
+                PortfolioBondModel model = new PortfolioBondModel(portfolio_id, bond_id, count);
+                model.setId(id);
+                list.add(model);
+            } while (cursor.moveToNext());
+        } else {
+
+        }
+        cursor.close();
+        db.close();
+        return list;
     }
 }

@@ -12,13 +12,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.investingmobileapp.RequestServices.UserServices;
+import com.example.investingmobileapp.helpers.DatabaseHelper;
 import com.example.investingmobileapp.interfaces.ILoginResponse;
 import com.example.investingmobileapp.interfaces.IRegisterResponse;
+import com.example.investingmobileapp.models.PortfolioModel;
+import com.example.investingmobileapp.models.UserModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileReader;
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -35,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         init();
         selListeners();
+        syncUsers();
     }
 
     public void init() {
@@ -59,12 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void localDbRegister(){
-
-    }
-
     public void register(View view) throws JSONException {
-
         UserServices userServices = new UserServices(this);
         String firstName = inputFirstName.getText().toString();
         String lastName = inputLastName.getText().toString();
@@ -91,5 +91,15 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void syncUsers(){
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        List<UserModel> list = dbHelper.getUsers();
+        for (UserModel model: dbHelper.getUsers()) {
+            if (!list.contains(model)) {
+                dbHelper.addUser(model);
+            }
+        }
     }
 }

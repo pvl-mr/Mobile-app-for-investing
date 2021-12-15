@@ -45,8 +45,6 @@ public class AnalystMainActivity extends AppCompatActivity {
             @Override
             public void onResponse(ArrayList<PortfolioModel> portfolios) {
                 RecyclerView recyclerView = findViewById(R.id.listPortfoliosAnayst);
-                Toast.makeText(AnalystMainActivity.this, portfolios.toString(), Toast.LENGTH_SHORT).show();
-                Log.d("2803402", portfolios.toString());
                 PortfolioAdapter.OnPortfolioClickListener stateClickListener = new PortfolioAdapter.OnPortfolioClickListener() {
                     @Override
                     public void OnPortfolioClick(PortfolioModel state, int position) {
