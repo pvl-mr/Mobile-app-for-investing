@@ -81,7 +81,8 @@ public class PortfolioServices {
     public void createPortfolio(JSONObject body, final ISimpleResponse portfolioCreateResponse){
 
         String url = LOCALHOST_SERVER;
-        JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, url, body, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, url, body,
+                new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -90,7 +91,6 @@ public class PortfolioServices {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("jsonbody1", body.toString());
                 portfolioCreateResponse.onError(body.toString());
             }
         });
@@ -131,7 +131,6 @@ public class PortfolioServices {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("093", body.toString());
                 portfolioCreateResponse.onError("Инструмент добавить в портфель не удалось");
             }
         });
@@ -153,6 +152,4 @@ public class PortfolioServices {
         });
         MySingleton.getInstance(context).addToRequestQueue(jsonObject);
     }
-
-
 }

@@ -41,7 +41,6 @@ public class PortfolioActivityOverview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portfolio_overview);
         init();
-        Toast.makeText(this, portfolio_id+"", Toast.LENGTH_SHORT).show();
     }
     public void init() {
         Bundle arguments = getIntent().getExtras();

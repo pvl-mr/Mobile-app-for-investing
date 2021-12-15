@@ -36,7 +36,6 @@ public class UserServices {
             @Override
             public void onResponse(JSONObject response) {
                 userId = "";
-                Log.d("user_id", response.toString());
                 loginResponse.onResponse(response);
             }
         }, new Response.ErrorListener() {

@@ -148,7 +148,6 @@ public class PortfoliosFragment extends Fragment {
             @Override
             public void onResponse(ArrayList<InstrumentModel> instrumentModels) {
                 bonds = instrumentModels;
-                Log.d("bonds-response", bonds.toString());
                 stocks = new ArrayList<>();
                 StockServices service = new StockServices(getActivity());
                 service.getStocks("portfolio", portfolios.get(i).getId()+"", new IGetInstrumentResponse() {
@@ -171,7 +170,6 @@ public class PortfoliosFragment extends Fragment {
         float sumStocks = 0;
         for (InstrumentModel temp: bonds) {
             sumBonds += temp.getPrice();
-            Log.d("bonds" + temp.getId(), sumBonds+"");
         }
         for (InstrumentModel temp: stocks) {
             sumStocks += temp.getPrice();

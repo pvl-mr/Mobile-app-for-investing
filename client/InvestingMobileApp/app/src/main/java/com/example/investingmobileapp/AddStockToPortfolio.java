@@ -43,7 +43,6 @@ public class AddStockToPortfolio extends AppCompatActivity {
 
         InstrumentModel stock = new InstrumentModel(id, name, desc, price, "stock");
         info.setText(stock.toString());
-        Toast.makeText(this, stock.toString(), Toast.LENGTH_SHORT).show();
         RecyclerView recyclerView = findViewById(R.id.listPortfolios2);
 
         PortfolioAdapter.OnPortfolioClickListener stateClickListener = new PortfolioAdapter.OnPortfolioClickListener() {

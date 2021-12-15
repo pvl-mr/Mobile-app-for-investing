@@ -41,8 +41,6 @@ public class StockServices {
             url = "";
         }
 
-        Log.d("90333", url);
-
         JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

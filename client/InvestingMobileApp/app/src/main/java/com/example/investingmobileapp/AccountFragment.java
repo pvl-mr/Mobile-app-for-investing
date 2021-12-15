@@ -24,6 +24,7 @@ public class AccountFragment extends Fragment {
     TextView tvFirstName;
     TextView tvLastName;
     Button logout;
+
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -52,8 +53,6 @@ public class AccountFragment extends Fragment {
     private void getUser(){
         Bundle arguments = getActivity().getIntent().getExtras();
         String user_id = arguments.get("user_id").toString();
-        Log.d("user_id------", user_id);
-        Toast.makeText(getActivity(), user_id, Toast.LENGTH_SHORT).show();
         service = new UserServices(getContext());
         service.getUser(user_id, new IUserResponse() {
             @Override

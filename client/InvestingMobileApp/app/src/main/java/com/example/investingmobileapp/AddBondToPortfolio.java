@@ -43,7 +43,6 @@ public class AddBondToPortfolio extends AppCompatActivity {
 
         InstrumentModel stock = new InstrumentModel(id, name, desc, price, "bond");
         info.setText(stock.toString());
-        Toast.makeText(this, stock.toString(), Toast.LENGTH_SHORT).show();
         RecyclerView recyclerView = findViewById(R.id.listPortfolios3);
 
         PortfolioAdapter.OnPortfolioClickListener stateClickListener = new PortfolioAdapter.OnPortfolioClickListener() {
@@ -62,8 +61,7 @@ public class AddBondToPortfolio extends AppCompatActivity {
                 services.addStockToPortfolio("bond", jsonBody, new ISimpleResponse() {
                     @Override
                     public void onError(String message) {
-                        Log.d("082", jsonBody.toString());
-                        Toast.makeText(AddBondToPortfolio.this, jsonBody.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddBondToPortfolio.this, message, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -76,7 +74,6 @@ public class AddBondToPortfolio extends AppCompatActivity {
             }
         };
         PortfolioAdapter adapter = new PortfolioAdapter(this, portfolios, stateClickListener);
-        Toast.makeText(this, portfolios.toString(), Toast.LENGTH_SHORT).show();
         recyclerView.setAdapter(adapter);
     }
 }

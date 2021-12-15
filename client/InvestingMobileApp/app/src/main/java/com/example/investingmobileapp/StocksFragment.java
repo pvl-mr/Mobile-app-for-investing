@@ -58,9 +58,6 @@ public class StocksFragment extends Fragment {
                 InstrumentAdapter.OnInstrumentClickListener stateClickListener = new InstrumentAdapter.OnInstrumentClickListener() {
                     @Override
                     public void OnInstrumentClick(InstrumentModel state, int position) {
-
-                        Toast.makeText(getActivity().getApplicationContext(), "Был выбран пункт " + state.getName(),
-                                Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), AddStockToPortfolio.class);
                         InstrumentModel stock = new InstrumentModel(state.getId(), state.getName(), state.getDescription(), state.getPrice(), "stock");
 

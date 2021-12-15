@@ -81,7 +81,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     intent = new Intent(LoginActivity.this, ClientMainActivity.class);
                 }
-                Toast.makeText(LoginActivity.this, userId, Toast.LENGTH_SHORT).show();
                 intent.putExtra("user_id", userId);
                 startActivity(intent);
             }

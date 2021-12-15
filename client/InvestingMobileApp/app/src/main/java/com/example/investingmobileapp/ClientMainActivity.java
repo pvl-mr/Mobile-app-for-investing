@@ -25,10 +25,7 @@ public class ClientMainActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         adapter = new FragmentAdapter(fm, getLifecycle());
-        Log.d("adaper", adapter.toString());
-        Log.d("pager2", pager2.toString());
         pager2.setAdapter(adapter);
-
 
         tabLayout.addTab(tabLayout.newTab().setText("Portfolios"));
         tabLayout.addTab(tabLayout.newTab().setText("Stocks"));
